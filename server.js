@@ -5,9 +5,10 @@ const app = express();
 app.use(cors());
 app.use(express.json({ limit: "20mb" }));
 
-// URL oficial del modelo Gemini
+// Endpoint correcto PARA API KEY de AI STUDIO (imagenes soportadas)
 const API_URL =
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
+  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" +
+  process.env.GEMINI_API_KEY;
 
 // Ruta principal del backend
 app.post("/analizar", async (req, res) => {
@@ -21,12 +22,7 @@ app.post("/analizar", async (req, res) => {
     const googleRes = await fetch(API_URL, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        // API KEY segura desde variables de entorno en Render
-        const API_URL =
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" +
-  process.env.GEMINI_API_KEY;
-
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
         contents: [
@@ -46,7 +42,6 @@ app.post("/analizar", async (req, res) => {
     });
 
     const data = await googleRes.json();
-
     return res.json(data);
 
   } catch (error) {
@@ -54,6 +49,8 @@ app.post("/analizar", async (req, res) => {
     res.status(500).json({ error: error.toString() });
   }
 });
+
+// Ruta debug (ELIMÍNALA cuando confirmemos que todo funciona)
 app.get("/debug", (req, res) => {
   res.json({
     keyExists: !!process.env.GEMINI_API_KEY,
@@ -65,3 +62,4 @@ app.get("/debug", (req, res) => {
 app.listen(process.env.PORT || 3000, () =>
   console.log("Servidor backend ejecutándose en Render")
 );
+
