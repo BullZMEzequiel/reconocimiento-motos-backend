@@ -23,7 +23,10 @@ app.post("/analizar", async (req, res) => {
       headers: {
         "Content-Type": "application/json",
         // API KEY segura desde variables de entorno en Render
-        "Authorization": `Bearer ${process.env.GEMINI_API_KEY}`
+        const API_URL =
+  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" +
+  process.env.GEMINI_API_KEY;
+
       },
       body: JSON.stringify({
         contents: [
