@@ -7,8 +7,9 @@ app.use(express.json({ limit: "20mb" }));
 
 // Endpoint correcto PARA API KEY de AI STUDIO (imagenes soportadas)
 const API_URL =
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" +
+  "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" +
   process.env.GEMINI_API_KEY;
+
 
 // Ruta principal del backend
 app.post("/analizar", async (req, res) => {
